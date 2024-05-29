@@ -75,8 +75,9 @@ func (s *stepExportImage) Run(ctx context.Context, state multistep.StateBag) mul
 
 			if fi.Size() != imageToExport.size {
 				os.Remove(tempDestinationPath)
-				ui.Error("image size mistmatch")
-				state.Put("error", fmt.Errorf("image size mistmatch"))
+				errMsg := fmt.Sprintf("image size mistmatch: expected %v, actual %v", imageToExport.size, fi.Size())
+				ui.Error(errMsg)
+				state.Put("error", fmt.Errorf(errMsg))
 				return multistep.ActionHalt
 			}
 
